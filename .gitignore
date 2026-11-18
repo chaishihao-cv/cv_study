@@ -1,0 +1,53 @@
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# ---------- 虚拟环境 ----------
+venv/
+.venv/
+env/
+ENV/
+
+# ---------- 模型权重与训练产物（体积大，不进仓库） ----------
+*.pth
+*.pt
+*.onnx
+*.ckpt
+*.engine
+*.h5
+runs/
+weights/
+logs/
+*.log
+
+# ---------- 数据集（图片动辄几个G，绝不提交） ----------
+datasets/
+dataset/
+data/images/
+data/labels/
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.mp4
+*.avi
+# 但标注配置文件要保留
+!data.yaml
+!*.yaml
+
+# ---------- 输出与临时文件 ----------
+outputs/
+output/
+results/
+tmp/
+temp/
+*.tmp
+
+# ---------- 编辑器与系统 ----------
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
