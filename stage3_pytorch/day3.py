@@ -124,8 +124,33 @@ import matplotlib.pyplot as plt
 a = torch.randn(3,4)
 print(a)
 print(a.shape)
-b = torch.tensor([5.], requires_grad=True)
+b = torch.tensor([5.,6.0,7.0], requires_grad=True)
 print(b)
 print(b.shape)
+try:
+    a_b = a + b
+    print(a_b)
+    print(a_b.shape)
+except RuntimeError as err:
+    print('a + b 会报错，因为 a 是 (3,4) 而 b 是 (3,1)')
+c = torch.tensor([1.,2.,3.,4.])
+print(c)
+print(c.shape)
+a_c = a + c
+print(a_c)
+print(a_c.shape)
 
+d = torch.tensor(5)
 
+d_a = d + a
+print(d_a)
+print(d_a.shape)
+
+e = torch.tensor([[1,2,3,4]])
+e_a = e + a
+print(e_a)
+print(e_a.shape)
+
+f = torch.tensor([[10.], [20.], [30.]])   # (3,1)
+print((a + f).shape)    # (3,4)
+print((a + f))          # 每行加自己的那个数
