@@ -75,48 +75,57 @@ import matplotlib.pyplot as plt
 #     print(f'第{i+1}次backward后，w.grad = {w.grad.item()}')
 
 
-torch.manual_seed(42)
+# torch.manual_seed(42)
 
-# 造数据（和 day1 一样：真值 w=2, b=3，加噪声）
-x = torch.linspace(-1, 1, 100)
-y = 2 * x + 3 + 0.3 * torch.randn(100)
+# # 造数据（和 day1 一样：真值 w=2, b=3，加噪声）
+# x = torch.linspace(-1, 1, 100)
+# y = 2 * x + 3 + 0.3 * torch.randn(100)
 
-# 参数：唯一区别就是多了 requires_grad=True
-w = torch.tensor(0.0, requires_grad=True)
-b = torch.tensor(0.0, requires_grad=True)
+# # 参数：唯一区别就是多了 requires_grad=True
+# w = torch.tensor(0.0, requires_grad=True)
+# b = torch.tensor(0.0, requires_grad=True)
 
-lr = 0.1
-loss_history = []
+# lr = 0.1
+# loss_history = []
 
-for epoch in range(200):
-    pred = w * x + b
-    loss = ((pred - y) ** 2).mean()
+# for epoch in range(200):
+#     pred = w * x + b
+#     loss = ((pred - y) ** 2).mean()
 
-    loss_history.append(loss.item())
-    loss.backward()
+#     loss_history.append(loss.item())
+#     loss.backward()
 
-    # ===== 梯度核对：只在第 1 轮做一次 =====
-    if epoch == 0:
-        with torch.no_grad():
-            grad_w_hand = (2 * (pred - y) * x).mean().item()
-            grad_b_hand = (2 * (pred - y)).mean().item()
-        print(f"【核对】w: autograd={w.grad.item():.8f}  手算={grad_w_hand:.8f}  差={abs(w.grad.item()-grad_w_hand):.2e}")
-        print(f"【核对】b: autograd={b.grad.item():.8f}  手算={grad_b_hand:.8f}  差={abs(b.grad.item()-grad_b_hand):.2e}")
+#     # ===== 梯度核对：只在第 1 轮做一次 =====
+#     if epoch == 0:
+#         with torch.no_grad():
+#             grad_w_hand = (2 * (pred - y) * x).mean().item()
+#             grad_b_hand = (2 * (pred - y)).mean().item()
+#         print(f"【核对】w: autograd={w.grad.item():.8f}  手算={grad_w_hand:.8f}  差={abs(w.grad.item()-grad_w_hand):.2e}")
+#         print(f"【核对】b: autograd={b.grad.item():.8f}  手算={grad_b_hand:.8f}  差={abs(b.grad.item()-grad_b_hand):.2e}")
 
-    with torch.no_grad():
-        w -= lr * w.grad
-        b -= lr * b.grad
-    w.grad = None
-    b.grad = None
+#     with torch.no_grad():
+#         w -= lr * w.grad
+#         b -= lr * b.grad
+#     w.grad = None
+#     b.grad = None
 
-    # ===== 每 10 轮打一次进度 =====
-    if epoch % 10 == 0 or epoch == 199:
-        print(f"epoch {epoch:3d}  w={w.item():.4f}  b={b.item():.4f}  loss={loss.item():.6f}")
+#     # ===== 每 10 轮打一次进度 =====
+#     if epoch % 10 == 0 or epoch == 199:
+#         print(f"epoch {epoch:3d}  w={w.item():.4f}  b={b.item():.4f}  loss={loss.item():.6f}")
 
 
 
-plt.plot(loss_history, label="torch autograd")
-plt.xlabel("epoch"); plt.ylabel("loss")
-plt.title("Day3: gradient descent with autograd")
-plt.grid(alpha=0.3); plt.legend()
-plt.show()
+# plt.plot(loss_history, label="torch autograd")
+# plt.xlabel("epoch"); plt.ylabel("loss")
+# plt.title("Day3: gradient descent with autograd")
+# plt.grid(alpha=0.3); plt.legend()
+# plt.show()
+
+a = torch.randn(3,4)
+print(a)
+print(a.shape)
+b = torch.tensor([5.], requires_grad=True)
+print(b)
+print(b.shape)
+
+
