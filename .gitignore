@@ -25,6 +25,7 @@ logs/
 # ---------- 数据集（图片动辄几个G，绝不提交） ----------
 datasets/
 dataset/
+data/MNIST/
 data/images/
 data/labels/
 *.jpg
