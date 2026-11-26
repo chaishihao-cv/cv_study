@@ -96,3 +96,38 @@ for L in [1, 2, 3]:
     print(f"\nL={L} s=2")
     actual = measure_rf(net)
     print(f"    s=1 时的 RF = {1 + 2 * L} | s=2 时的 RF = {actual}")
+
+print("任务 3 验证'3个3*3=1个7*7'")
+import torch.nn.functional as F
+torch.manual_seed(7)
+k1,k2,k3 = [torch.randn(1,1,3,3) for _ in range(3)]
+
+# 把三个核做 full 卷积，合成一个 7x7
+comp = F.conv2d(F.conv2d(k1,k2.flip(2,3),padding=2),k3.flip(2,3),padding=2)
+net = nn.Sequential(nn.Conv2d(1,1,3,padding=1,bias=False),
+                    nn.Conv2d(1,1,3,padding=1,bias=False),
+                    nn.Conv2d(1,1,3,padding=1,bias=False))
+for m, k in zip(net, [k1, k2, k3]):
+    m.weight.data = k.clone()
+
+big = nn.Conv2d(1, 1, 7, padding=3, bias=False)
+big.weight.data = comp.clone()
+
+img = torch.randn(1, 1, 32, 32)
+o_stack, o_big = net(img), big(img)
+
+inner = (slice(None), slice(None), slice(3, -3), slice(3, -3))
+print("内部最大差异 :", (o_stack[inner] - o_big[inner]).abs().max().item())
+print("整体最大差异 :", (o_stack - o_big).abs().max().item())
+print("第0行最大差异:", (o_stack - o_big).abs()[0,0,0,:].max().item())
+
+print('任务 4 · stride 的代价')
+for L in [1, 2, 3]:
+    net = nn.Sequential(*[nn.Conv2d(1,1,3,padding=1,stride=2,bias=False) for _ in range(L)])
+    print(L, measure_rf(net))  
+
+print('任务 5 · 参数量 / MACs 对比')
+C, h = 64, 224
+print("7x7   :", 49*C*C + C, 49*h*h*C*C)
+print("3x3x3 :", 3*9*C*C + 3*C, 3*9*h*h*C*C)
+print("比例  :", 49/27, " 省:", (1 - 27/49)*100, "%")
